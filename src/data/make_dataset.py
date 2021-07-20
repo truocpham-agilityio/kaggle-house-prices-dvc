@@ -1,30 +1,42 @@
 # -*- coding: utf-8 -*-
-import click
-import logging
+import argparse
+import os
 from pathlib import Path
-from dotenv import find_dotenv, load_dotenv
+
+from kaggle.api.kaggle_api_extended import KaggleApi
 
 
-@click.command()
-@click.argument('input_filepath', type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
-def main(input_filepath, output_filepath):
-    """ Runs data processing scripts to turn raw data from (../raw) into
-        cleaned data ready to be analyzed (saved in ../processed).
-    """
-    logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+def download_data(competition, train_data, test_data,
+                  output_dir='./train/raw', credentials='.kaggle/kaggle.json'):
+    """Download raw dataset from Kaggle"""
+    credentials = Path.home().joinpath(credentials)
+    output_dir = Path(output_dir).resolve()
+
+    assert (os.path.isfile(credentials)), FileNotFoundError(credentials)
+    assert (os.path.isdir(output_dir)), NotADirectoryError(output_dir)
+
+    api = KaggleApi()
+    api.authenticate()
+
+    api.competition_download_file(competition, train_data, path=output_dir)
+    api.competition_download_file(competition, test_data, path=output_dir)
 
 
 if __name__ == '__main__':
-    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    logging.basicConfig(level=logging.INFO, format=log_fmt)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c', '--competition', dest='competition',
+                        required=True, help='Kaggle competition to download')
+    parser.add_argument('-tr', '--train_data', dest='train_data',
+                        required=True, help='Train CSV data file')
+    parser.add_argument('-te', '--test_data', dest='test_data',
+                        required=True, help='Test CSV data file')
+    parser.add_argument('-o', '--output_dir', dest='output_dir',
+                        required=False, help='Output directory')
 
-    # not used in this stub but often useful for finding various files
-    project_dir = Path(__file__).resolve().parents[2]
+    args = parser.parse_args()
+    args.output_dir = Path(args.output_dir).resolve()
 
-    # find .env automagically by walking up directories until it's found, then
-    # load up the .env entries as environment variables
-    load_dotenv(find_dotenv())
+    train_path = args.output_dir.joinpath(args.train_data)
+    test_path = args.output_dir.joinpath(args.test_data)
 
-    main()
+    download_data(args.competition, args.train_data, args.test_data, output_dir=args.output_dir)
