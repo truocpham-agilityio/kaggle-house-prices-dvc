@@ -1,0 +1,10 @@
+stages:
+  make_dataset:
+    desc: Download data from Kaggle
+    cmd: python3 src/data/make_dataset.py -c titanic -tr train.csv -te test.csv -o
+      ./data/raw
+    deps:
+    - src/data/make_dataset.py
+    outs:
+    - data/raw/test.csv
+    - data/raw/train.csv
