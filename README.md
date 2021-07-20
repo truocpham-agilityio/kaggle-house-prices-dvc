@@ -8,7 +8,6 @@ Predict sales prices on the Kaggle House Prices dataset using DVC for reproducib
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
-    ├── bin                <- Helper commands.
     ├── data
     │   ├── external       <- Data from third party sources.
     │   ├── interim        <- Intermediate data that has been transformed.
@@ -31,11 +30,12 @@ Predict sales prices on the Kaggle House Prices dataset using DVC for reproducib
     ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
     │                         generated with `pip freeze > requirements.txt`
     │
+    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
     ├── src                <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
     │   │
     │   ├── data           <- Scripts to download or generate data
-    │   │   └── load_data.py
+    │   │   └── make_dataset.py
     │   │
     │   ├── features       <- Scripts to turn raw data into features for modeling
     │   │   └── build_features.py
@@ -48,7 +48,7 @@ Predict sales prices on the Kaggle House Prices dataset using DVC for reproducib
     │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
     │       └── visualize.py
     │
-    └── tox.ini            <- tox file with settings for running tox; see tox.testrun.org
+    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
 ```
 
 ## Prerequisites
