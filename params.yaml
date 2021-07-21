@@ -1,0 +1,6 @@
+ignore_cols:
+- Id
+- SalePrice
+
+imputation:
+  method: mean

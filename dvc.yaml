@@ -1,10 +1,24 @@
 stages:
   make_dataset:
     desc: Download data from Kaggle
-    cmd: python3 src/data/make_dataset.py -c house-prices-advanced-regression-techniques -tr train.csv -te test.csv -o
-      ./data/raw
+    cmd: python3 src/data/make_dataset.py -c house-prices-advanced-regression-techniques
+      -tr train.csv -te test.csv -o ./data/raw
     deps:
     - src/data/make_dataset.py
     outs:
     - data/raw/test.csv
     - data/raw/train.csv
+  impute_nan:
+    desc: Replace missing values for the numerical columns
+    cmd: python3 src/data/replace_nan.py -tr data/raw/test.csv -te data/raw/test.csv
+      -o ./data/interim
+    deps:
+    - data/raw/test.csv
+    - data/raw/train.csv
+    - src/data/replace_nan.py
+    params:
+    - ignore_cols
+    - imputation
+    outs:
+    - data/interim/test_nan_imputed.csv
+    - data/interim/train_nan_imputed.csv
