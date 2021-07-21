@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from pathlib import Path
 
 import pandas as pd
 import yaml
@@ -57,14 +58,17 @@ def save_as_csv(df, filepath, output_dir,
     """Helper function to format the new filename and save output"""
 
     # if single path as str, convert to list of str
-    if type(df) is not list:
+    if not isinstance(df, list):
         df = [df]
 
-    if type(filepath) is str:
+    if isinstance(filepath, str):
         filepath = [filepath]
 
     # list lengths must be equal
     assert (len(df) == len(filepath)), AssertionError
+
+    output_dir = Path(output_dir).resolve()
+    assert (os.path.isdir(output_dir)), NotADirectoryError(output_dir)
 
     for temp_df, temp_path in zip(df, filepath):
         # set output filenames
@@ -82,5 +86,4 @@ def is_missing(df, columns):
     for column in columns:
         if df[column].isnull().values.any():
             return True
-        else:
-            return False
+        return False

@@ -4,11 +4,9 @@ import os
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
-
 from sklearn.impute import SimpleImputer
 
-from src.data import load_data, load_params, save_as_csv, is_missing
+from src.data import is_missing, load_data, load_params, save_as_csv
 
 
 def replace_num_missing(df, exclude=['Id', 'SalePrice'], strategy='mean'):
@@ -18,14 +16,14 @@ def replace_num_missing(df, exclude=['Id', 'SalePrice'], strategy='mean'):
     num_cols = df.select_dtypes(include=[np.number]).columns.difference(exclude)
 
     # imputer NaN value with the input strategy
-    imputer = SimpleImputer(missing_values=np.nan, strategy=strategy)
+    imputer = SimpleImputer(missing_values=np.NaN, strategy=strategy)
 
     for col in num_cols:
         # fit imputing with numerical column
-        imputer.fit([df[col]])
+        imputer = imputer.fit(df[[col]])
 
         # assign imputed value for numerical column
-        df[col] = pd.Series(imputer.transform([df[col]]).tolist()[0])
+        df[col] = imputer.transform(df[[col]]).ravel()
 
     return df
 
@@ -43,13 +41,13 @@ def replace_nan(train_path, test_path, output_dir):
     # load params
     params = load_params()
 
-    # fill nans for numerical columns
+    # fill NaNs for numerical columns
     train_df = replace_num_missing(train_df, params['ignore_cols'], params['imputation']['method'])
     test_df = replace_num_missing(test_df, params['ignore_cols'], params['imputation']['method'])
 
     # make sure no missing values
-    assert (not is_missing(train_df, train_df.columns), True), AssertionError
-    assert (not is_missing(test_df, test_df.columns), True), AssertionError
+    assert (not is_missing(train_df, train_df.columns)), AssertionError
+    assert (not is_missing(test_df, test_df.columns)), AssertionError
 
     # save data
     save_as_csv([train_df, test_df],
@@ -71,4 +69,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    replace_nan(args.train_path, args.train_path, output_dir=args.output_dir)
+    replace_nan(args.train_path, args.test_path, output_dir=args.output_dir)
