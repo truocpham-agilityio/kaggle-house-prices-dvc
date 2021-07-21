@@ -115,5 +115,11 @@ dvc status
 dvc repro
 ```
 
+## Jupyter Lab
+
+```bash
+jupyter-lab
+```
+
 ## DVC Studio View
 

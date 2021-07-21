@@ -10,3 +10,4 @@ ipython==6.3.1
 scikit_learn==0.24.2
 kaggle==1.5.12
 dvc==2.5.4
+jupyterlab==3.0.16
