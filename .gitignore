@@ -78,7 +78,6 @@ target/
 
 # Mac OS-specific storage files
 .DS_Store
-/data/
 .Trash-*/
 
 # Compiled python modules.
