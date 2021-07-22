@@ -39,3 +39,30 @@ stages:
     - path: data/interim/train_categorized.csv
       md5: e8a3d808a439796c761fd48b70c1e1e6
       size: 1651842
+  impute_nan:
+    cmd: python3 src/data/replace_nan.py -tr data/interim/train_categorized.csv -te
+      data/interim/test_categorized.csv -o data/interim
+    deps:
+    - path: data/interim/test_categorized.csv
+      md5: 3262d0ef8b68417d675f46219a50d6c9
+      size: 1644830
+    - path: data/interim/train_categorized.csv
+      md5: e8a3d808a439796c761fd48b70c1e1e6
+      size: 1651842
+    - path: src/data/replace_nan.py
+      md5: f480d1db48a35f7e0fcc743f7b56b433
+      size: 2145
+    params:
+      params.yaml:
+        ignore_cols:
+        - Id
+        - SalePrice
+        imputation:
+          method: mean
+    outs:
+    - path: data/interim/test_nan_imputed.csv
+      md5: e201e89090f937052d86ae46aaa738fe
+      size: 1847973
+    - path: data/interim/train_nan_imputed.csv
+      md5: 6194100e886f986aea89b2da4bcb77d4
+      size: 1855363

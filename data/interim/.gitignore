@@ -1,2 +1,4 @@
 /test_categorized.csv
 /train_categorized.csv
+/test_nan_imputed.csv
+/train_nan_imputed.csv
