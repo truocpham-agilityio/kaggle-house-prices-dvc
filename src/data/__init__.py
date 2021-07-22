@@ -21,7 +21,7 @@ def load_data(data_path, sep=',', header=None, index_col=None) -> object:
     """
 
     # if single path as str, convert to list of str
-    if type(data_path) is str:
+    if isinstance(data_path, str):
         data_path = [data_path]
 
     # loop ever filepath in list and read file

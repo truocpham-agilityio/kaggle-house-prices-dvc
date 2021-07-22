@@ -19,7 +19,7 @@ def replace_nan(train_path, test_path, output_dir):
     assert (os.path.isdir(output_dir)), NotADirectoryError(output_dir)
 
     # load data
-    train_df, test_df = load_data([train_path, test_path], sep=',', header=0, index_col='Id')
+    train_df, test_df = load_data([train_path, test_path], sep=',', header=0)
 
     # load params
     params = load_params()

@@ -19,7 +19,7 @@ def encode_labels(train_path, test_path, output_dir, remove_nan=False):
     assert (os.path.isdir(output_dir)), NotADirectoryError
 
     # load data
-    train_df, test_df = load_data([train_path, test_path], sep=',', header=0, index_col='Id')
+    train_df, test_df = load_data([train_path, test_path], sep=',', header=0)
 
     # load params
     params = load_params()
