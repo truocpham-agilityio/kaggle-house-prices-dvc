@@ -89,7 +89,7 @@ def save_as_csv(df, filepath, output_dir,
 
         # save updated dataframes
         save_filepath = output_dir.joinpath(save_fname)
-        temp_df.to_csv(save_filepath, na_rep=na_rep)
+        temp_df.to_csv(save_filepath, na_rep=na_rep, index=False)
         if output_path:
             return save_filepath
 
