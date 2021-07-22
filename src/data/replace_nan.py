@@ -4,9 +4,11 @@ import os
 from pathlib import Path
 
 import pandas as pd
+import numpy as np
 
-from src.data import (is_missing, load_data, load_params, save_as_csv,
-                      replace_num_missing, replace_cat_missing)
+from sklearn.impute import SimpleImputer
+
+from src.data import is_missing, load_data, load_params, save_as_csv
 
 
 def replace_nan(train_path, test_path, output_dir):
@@ -25,11 +27,15 @@ def replace_nan(train_path, test_path, output_dir):
     # concatenate df
     df = pd.concat([train_df, test_df], sort=False)
 
-    # fill NaNs for numerical columns
-    df = replace_num_missing(df, params['ignore_cols'], params['imputation']['method'])
+    # fill NaNs with the default strategy is mean
+    num_cols = df.select_dtypes(include=[np.number]).columns.difference(params['ignore_cols'])
+    imputer = SimpleImputer(missing_values=np.NaN, strategy=params['imputation']['method'])
+    for col in num_cols:
+        # fit imputing with numerical column
+        imputer = imputer.fit(df[[col]])
 
-    # fill NaNs for categorical columns
-    df = replace_cat_missing(df)
+        # assign imputed value for numerical column
+        df[col] = imputer.transform(df[[col]]).ravel()
 
     # make sure no missing values
     assert (not is_missing(df, df.columns)), AssertionError

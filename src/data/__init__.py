@@ -4,11 +4,6 @@ from pathlib import Path
 
 import yaml
 import pandas as pd
-import numpy as np
-
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import OneHotEncoder
 
 
 def load_data(data_path, sep=',', header=None, index_col=None) -> object:
@@ -113,67 +108,3 @@ def is_missing(df, columns) -> bool:
         if df[column].isnull().values.any():
             return True
         return False
-
-
-def replace_num_missing(df, exclude=['Id', 'SalePrice'], strategy='mean') -> object:
-    """Deal with missing values in numerical columns using scikit learn SimpleImputer
-
-    Args:
-        df (object): dataset for processing
-        exclude (array): the columns as an exclude list, default is ['Id', 'SalePrice']
-        strategy (str): the strategy to impute nan, default is mean
-
-    Returns:
-        object: the imputed dataset
-    """
-
-    # numerical columns
-    num_cols = df.select_dtypes(include=[np.number]).columns.difference(exclude)
-
-    # imputer NaN value with the input strategy
-    imputer = SimpleImputer(missing_values=np.NaN, strategy=strategy)
-
-    for col in num_cols:
-        # fit imputing with numerical column
-        imputer = imputer.fit(df[[col]])
-
-        # assign imputed value for numerical column
-        df[col] = imputer.transform(df[[col]]).ravel()
-
-    return df
-
-
-def replace_cat_missing(df) -> object:
-    """Deal with missing values in categorical columns
-
-    Args:
-        df (object): dataset for processing
-
-    Returns:
-        object: the imputed dataset
-    """
-
-    # categorical dataframe
-    cat_df = df.select_dtypes(include=['object'])
-
-    # transform text classification to numerical
-    for col in cat_df.columns.values:
-        # fill missing value
-        df[col].fillna('None', inplace=True)
-
-        # label encode
-        le = LabelEncoder()
-        col_enc = str(col) + '_label'
-        le_labels = le.fit_transform(df[col])
-        df[col_enc] = le_labels
-
-        # one hot encode
-        ohe = OneHotEncoder()
-        arr_enc = ohe.fit_transform(df[[col_enc]]).toarray()
-        labels_enc = list(le.classes_)
-        ohe_enc_df = pd.DataFrame(arr_enc, columns=labels_enc)
-
-        # add encoded attributes to categorical dataframe
-        df[labels_enc] = ohe_enc_df[labels_enc]
-
-    return df
