@@ -25,8 +25,8 @@ stages:
       md5: 80ccab65fb115cbad143dbbd2bcd5577
       size: 460676
     - path: src/data/replace_nan.py
-      md5: bdaa0996cb05a62431942a29aff6f04f
-      size: 1915
+      md5: 0c62f3bfb7448147c743e07f7a82019c
+      size: 1906
     params:
       params.yaml:
         ignore_cols:
@@ -36,8 +36,8 @@ stages:
           method: mean
     outs:
     - path: data/interim/test_nan_imputed.csv
-      md5: eb097f5f1cec382a61227854b7976f26
-      size: 1655215
+      md5: d9ccdccadddf084975b59bf5ef0a7e16
+      size: 1717929
     - path: data/interim/train_nan_imputed.csv
-      md5: aaa351872b0d7c8228c8668518b5bf56
-      size: 1729711
+      md5: c5e2248ed2eaf5ae7c50c44d7794a33c
+      size: 1732740
