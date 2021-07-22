@@ -2,8 +2,14 @@
 import os
 from pathlib import Path
 
-import pandas as pd
 import yaml
+import pandas as pd
+import numpy as np
+
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import LabelBinarizer
 
 
 def load_data(data_path, sep=',', header=None, index_col=None) -> object:
@@ -55,7 +61,20 @@ def load_params(filepath='params.yaml') -> dict:
 
 def save_as_csv(df, filepath, output_dir,
                 replace_text='.csv', suffix='_processed.csv', na_rep='nan', output_path=False):
-    """Helper function to format the new filename and save output"""
+    """Helper function to format the new filename and save output
+
+    Args:
+        df (object): dataset for processing
+        filepath (str): full filepath to dataset
+        output_dir (str): output dir name or full output dir path to save the outputs
+        replace_text (str): default the replaced text is .csv
+        suffix (str): default the new suffix text is _processed.csv
+        nan_rep (str): the pattern to replace in exporting csv, default is nan
+        output_path (bool): the flag to return the output dir path
+
+    Returns:
+        void:
+    """
 
     # if single path as str, convert to list of str
     if not isinstance(df, list):
@@ -81,9 +100,45 @@ def save_as_csv(df, filepath, output_dir,
             return save_filepath
 
 
-def is_missing(df, columns):
-    """Helper function to check missing values on dataset"""
+def is_missing(df, columns) -> bool:
+    """Helper function to check missing values on dataset
+
+    Args:
+        df (object): dataset for processing
+        columns (array): the columns list
+
+    Returns:
+        bool: the flag to mark dataset still have missing values or not
+    """
     for column in columns:
         if df[column].isnull().values.any():
             return True
         return False
+
+
+def replace_num_missing(df, exclude=['Id', 'SalePrice'], strategy='mean') -> object:
+    """Deal with missing values in numerical columns using scikit learn SimpleImputer
+
+    Args:
+        df (object): dataset for processing
+        exclude (array): the columns as an exclude list, default is ['Id', 'SalePrice']
+        strategy (str): the strategy to impute nan, default is mean
+
+    Returns:
+        object: the imputed dataset
+    """
+
+    # numerical columns
+    num_cols = df.select_dtypes(include=[np.number]).columns.difference(exclude)
+
+    # imputer NaN value with the input strategy
+    imputer = SimpleImputer(missing_values=np.NaN, strategy=strategy)
+
+    for col in num_cols:
+        # fit imputing with numerical column
+        imputer = imputer.fit(df[[col]])
+
+        # assign imputed value for numerical column
+        df[col] = imputer.transform(df[[col]]).ravel()
+
+    return df

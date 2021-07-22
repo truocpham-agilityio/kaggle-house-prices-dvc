@@ -25,8 +25,8 @@ stages:
       md5: 80ccab65fb115cbad143dbbd2bcd5577
       size: 460676
     - path: src/data/replace_nan.py
-      md5: 0258f0f57b5ae4d83bdd5eb18da0e383
-      size: 2407
+      md5: 150ae4e2d4eaedeeb8a4e0147b43da76
+      size: 1741
     params:
       params.yaml:
         ignore_cols:

@@ -3,29 +3,7 @@ import argparse
 import os
 from pathlib import Path
 
-import numpy as np
-from sklearn.impute import SimpleImputer
-
-from src.data import is_missing, load_data, load_params, save_as_csv
-
-
-def replace_num_missing(df, exclude=['Id', 'SalePrice'], strategy='mean'):
-    """Deal with missing values in numerical columns using scikit learn SimpleImputer"""
-
-    # numerical columns
-    num_cols = df.select_dtypes(include=[np.number]).columns.difference(exclude)
-
-    # imputer NaN value with the input strategy
-    imputer = SimpleImputer(missing_values=np.NaN, strategy=strategy)
-
-    for col in num_cols:
-        # fit imputing with numerical column
-        imputer = imputer.fit(df[[col]])
-
-        # assign imputed value for numerical column
-        df[col] = imputer.transform(df[[col]]).ravel()
-
-    return df
+from src.data import is_missing, load_data, load_params, save_as_csv, replace_num_missing
 
 
 def replace_nan(train_path, test_path, output_dir):
