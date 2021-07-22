@@ -3,7 +3,8 @@ import argparse
 import os
 from pathlib import Path
 
-from src.data import is_missing, load_data, load_params, save_as_csv, replace_num_missing
+from src.data import (is_missing, load_data, load_params, save_as_csv,
+                      replace_num_missing, replace_cat_missing)
 
 
 def replace_nan(train_path, test_path, output_dir):
@@ -22,6 +23,10 @@ def replace_nan(train_path, test_path, output_dir):
     # fill NaNs for numerical columns
     train_df = replace_num_missing(train_df, params['ignore_cols'], params['imputation']['method'])
     test_df = replace_num_missing(test_df, params['ignore_cols'], params['imputation']['method'])
+
+    # fill NaNs for categorical columns
+    train_df = replace_cat_missing(train_df)
+    test_df = replace_cat_missing(test_df)
 
     # make sure no missing values
     assert (not is_missing(train_df, train_df.columns)), AssertionError
