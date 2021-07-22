@@ -3,6 +3,8 @@ import argparse
 import os
 from pathlib import Path
 
+import pandas as pd
+
 from src.data import (is_missing, load_data, load_params, save_as_csv,
                       replace_num_missing, replace_cat_missing)
 
@@ -20,17 +22,21 @@ def replace_nan(train_path, test_path, output_dir):
     # load params
     params = load_params()
 
+    # concatenate df
+    df = pd.concat([train_df, test_df], sort=False)
+
     # fill NaNs for numerical columns
-    train_df = replace_num_missing(train_df, params['ignore_cols'], params['imputation']['method'])
-    test_df = replace_num_missing(test_df, params['ignore_cols'], params['imputation']['method'])
+    df = replace_num_missing(df, params['ignore_cols'], params['imputation']['method'])
 
     # fill NaNs for categorical columns
-    train_df = replace_cat_missing(train_df)
-    test_df = replace_cat_missing(test_df)
+    df = replace_cat_missing(df)
 
     # make sure no missing values
-    assert (not is_missing(train_df, train_df.columns)), AssertionError
-    assert (not is_missing(test_df, test_df.columns)), AssertionError
+    assert (not is_missing(df, df.columns)), AssertionError
+
+    # return datasets to train and test
+    train_df = df.loc[train_df.index, df.columns]
+    test_df = df.loc[test_df.index, df.columns[1:]]
 
     # save data
     save_as_csv([train_df, test_df],
