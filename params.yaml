@@ -4,3 +4,7 @@ ignore_cols:
 
 imputation:
   method: mean
+
+encoding:
+  binary_to_numerical_cols:
+  - CentralAir
