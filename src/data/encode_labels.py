@@ -25,16 +25,15 @@ def encode_labels(train_path, test_path, output_dir, remove_nan=False):
     params = load_params()
 
     # concatenate df
-    df = pd.concat([train_df, test_df], sort=False)
+    df = pd.concat([train_df, test_df], ignore_index=True)
 
     # convert binary 0/1 classification
     lb = LabelBinarizer()
     binary_to_numerical_cols = params['encoding']['binary_to_numerical_cols']
     for col in binary_to_numerical_cols:
-        df[col] = lb.fit_transform(train_df[col])
+        df[col] = lb.fit_transform(df[col])
 
     # label encoding to numeric
-    # categorical dataframe
     cat_df = df.select_dtypes(include=['object'])
     for col in cat_df.columns.values:
         # fill missing value
@@ -60,8 +59,9 @@ def encode_labels(train_path, test_path, output_dir, remove_nan=False):
         df = df.dropna(axis=0, how='any')
 
     # return datasets to train and test
-    train_df = df.loc[train_df.index, df.columns]
-    test_df = df.loc[test_df.index, df.columns[1:]]
+    n_train = train_df.shape[0]
+    train_df = df[:n_train]
+    test_df = df[n_train:]
 
     # save data
     save_as_csv([train_df, test_df],

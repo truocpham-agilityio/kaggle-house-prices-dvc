@@ -25,7 +25,7 @@ def replace_nan(train_path, test_path, output_dir):
     params = load_params()
 
     # concatenate df
-    df = pd.concat([train_df, test_df], sort=False)
+    df = pd.concat([train_df, test_df], ignore_index=True)
 
     # fill NaNs with the default strategy is mean
     num_cols = df.select_dtypes(include=[np.number]).columns.difference(params['ignore_cols'])
@@ -41,8 +41,9 @@ def replace_nan(train_path, test_path, output_dir):
     assert (not is_missing(df, df.columns)), AssertionError
 
     # return datasets to train and test
-    train_df = df.loc[train_df.index, df.columns]
-    test_df = df.loc[test_df.index, df.columns[1:]]
+    n_train = train_df.shape[0]
+    train_df = df[:n_train]
+    test_df = df[n_train:]
 
     # save data
     save_as_csv([train_df, test_df],
