@@ -4,18 +4,14 @@ import os
 from pathlib import Path
 
 import pandas as pd
-import numpy as np
 
-from sklearn.impute import SimpleImputer
-
-from src.data import is_missing, load_data, load_params, save_as_csv
+from src.data import load_data, load_params, save_as_csv
 
 
-def replace_nan(train_path, test_path, output_dir):
-    """Replace NaN values"""
+def remove_outliers(train_path, test_path, output_dir):
+    """Remove outliers values"""
 
     output_dir = Path(output_dir).resolve()
-
     assert (os.path.isdir(output_dir)), NotADirectoryError(output_dir)
 
     # load data
@@ -27,23 +23,12 @@ def replace_nan(train_path, test_path, output_dir):
     # concatenate df
     df = pd.concat([train_df, test_df], ignore_index=True)
 
-    # fill NaNs with the default strategy is mean
-    num_cols = df.select_dtypes(include=[np.number]).columns.difference(params['ignore_cols'])
-    imputer = SimpleImputer(missing_values=np.NaN, strategy=params['imputation']['method'])
-    for col in num_cols:
-        # fit imputing with numerical column
-        imputer = imputer.fit(df[[col]])
-
-        # assign imputed value for numerical column
-        df[col] = imputer.transform(df[[col]]).ravel()
-
-    # fill None for categorical values
-    cat_df = df.select_dtypes(include=['object'])
-    for col in cat_df.columns.values:
-        df[col].fillna('None', inplace=True)
-
-    # make sure no missing values
-    assert (not is_missing(df, df.columns)), AssertionError
+    # optionally remove outliers
+    target_class = params['target_class']
+    if params['is_drop_outlier']:
+        df.drop(df[(train_df['GrLivArea'] > 4000) & (df[target_class] < 300000)].index, inplace=True)
+        df.drop(df[(df['GarageArea'] > 800) & (df[target_class] > 700000)].index, inplace=True)
+        df.drop(df[(train_df['TotalBsmtSF'] > 6000) & (df[target_class] < 200000)].index, inplace=True)
 
     # return datasets to train and test
     n_train = train_df.shape[0]
@@ -54,8 +39,8 @@ def replace_nan(train_path, test_path, output_dir):
     save_as_csv([train_df, test_df],
                 [train_path, test_path],
                 output_dir,
-                replace_text='_categorized.csv',
-                suffix='_nan_imputed.csv',
+                replace_text='.csv',
+                suffix='_outliers_removed.csv',
                 na_rep='nan')
 
 
@@ -70,4 +55,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    replace_nan(args.train_path, args.test_path, output_dir=args.output_dir)
+    remove_outliers(args.train_path, args.test_path, output_dir=args.output_dir)

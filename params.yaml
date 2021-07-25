@@ -1,6 +1,10 @@
+target_class: SalePrice
+
 ignore_cols:
 - Id
 - SalePrice
+
+is_drop_outlier: true
 
 imputation:
   method: mean
