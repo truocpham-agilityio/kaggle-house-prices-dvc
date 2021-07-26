@@ -62,3 +62,13 @@ stages:
     outs:
     - data/interim/test_skewed.csv
     - data/interim/train_skewed.csv
+  train_model:
+    desc: Train model
+    cmd: python3 src/models/train_model.py -tr data/interim/train_skewed.csv -rd ./results
+      -md ./models
+    deps:
+    - data/interim/train_skewed.csv
+    - src/models/train_model.py
+    params:
+    - model_params
+    - target_class
