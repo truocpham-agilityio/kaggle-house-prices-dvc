@@ -54,7 +54,7 @@ def replace_nan(train_path, test_path, output_dir):
     save_as_csv([train_df, test_df],
                 [train_path, test_path],
                 output_dir,
-                replace_text='_categorized.csv',
+                replace_text='_outliers_removed.csv',
                 suffix='_nan_imputed.csv',
                 na_rep='nan')
 
