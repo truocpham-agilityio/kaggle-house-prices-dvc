@@ -26,6 +26,9 @@ def skew_data(train_path, test_path, output_dir):
     # concatenate df
     df = pd.concat([train_df, test_df], ignore_index=True)
 
+    # cache the Id
+    index_df = df['Id']
+
     if params['skew']['is_transform']:
         df = df.drop(params['ignore_cols'], axis=1)
         numeric_df = df.select_dtypes(exclude=['object'])
@@ -33,6 +36,9 @@ def skew_data(train_path, test_path, output_dir):
         skewness_features = skewness[abs(skewness) >= params['skew']['threshold']].index
         df[skewness_features] = np.log1p(df[skewness_features])
         df = pd.get_dummies(df)
+
+    # insert the Id at the beginning
+    df.insert(loc=0, column='Id', value=index_df)
 
     # return datasets to train and test
     n_train = train_df.shape[0]

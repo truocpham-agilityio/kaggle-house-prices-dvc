@@ -101,8 +101,8 @@ stages:
       md5: ab638ccee5a10ec25e72b47137418793
       size: 1923959
     - path: src/data/skew_data.py
-      md5: 3d002de5fcb535e1a63459473a6ea5af
-      size: 1949
+      md5: a76c558d564981db2ca0994fce2865cf
+      size: 2081
     params:
       params.yaml:
         ignore_cols:
@@ -113,8 +113,8 @@ stages:
           threshold: 0.5
     outs:
     - path: data/interim/test_skewed.csv
-      md5: 0a11c5c85a3a0883e0c6ee16db4c970c
-      size: 4020296
+      md5: ff7eb536df629d01c974d0a605e4b93a
+      size: 4027594
     - path: data/interim/train_skewed.csv
-      md5: 216e6001084c740da1e5bbcce904f7ca
-      size: 4012724
+      md5: c0001a0b7e3f738728de42fc831056c3
+      size: 4018902
