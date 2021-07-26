@@ -66,3 +66,30 @@ stages:
     - path: data/interim/train_nan_imputed.csv
       md5: 6194100e886f986aea89b2da4bcb77d4
       size: 1855363
+  remove_outliers:
+    cmd: python3 src/data/remove_outliers.py -tr data/raw/train.csv -te data/raw/test.csv
+      -o data/interim
+    deps:
+    - path: data/raw/test.csv
+      md5: dcec4b79bf9c7317bd9e17789bf888f0
+      size: 451405
+    - path: data/raw/train.csv
+      md5: 80ccab65fb115cbad143dbbd2bcd5577
+      size: 460676
+    - path: src/data/remove_outliers.py
+      md5: 4e565121d319f1720f7f8441d394513a
+      size: 1805
+    params:
+      params.yaml:
+        ignore_cols:
+        - Id
+        - SalePrice
+        imputation:
+          method: mean
+    outs:
+    - path: data/interim/test_outliers_removed.csv
+      md5: a95186cee997d3feb964f1f14e167c61
+      size: 489843
+    - path: data/interim/train_outliers_removed.csv
+      md5: 55a4ea116d519cfb280e3bcb6efcb37a
+      size: 474361
