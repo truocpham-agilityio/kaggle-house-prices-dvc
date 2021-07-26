@@ -15,18 +15,18 @@ stages:
       md5: 80ccab65fb115cbad143dbbd2bcd5577
       size: 460676
   encode_labels:
-    cmd: python3 src/data/encode_labels.py -tr data/raw/train.csv -te data/raw/test.csv
-      -o data/interim
+    cmd: python3 src/data/encode_labels.py -tr data/interim/train_nan_imputed.csv
+      -te data/interim/test_nan_imputed.csv -o data/interim
     deps:
-    - path: data/raw/test.csv
-      md5: dcec4b79bf9c7317bd9e17789bf888f0
-      size: 451405
-    - path: data/raw/train.csv
-      md5: 80ccab65fb115cbad143dbbd2bcd5577
-      size: 460676
+    - path: data/interim/test_nan_imputed.csv
+      md5: 4333d44b0b3986ac4319002082a38eae
+      size: 580003
+    - path: data/interim/train_nan_imputed.csv
+      md5: 2980c1808a300ce0c0940f5838cd679c
+      size: 584918
     - path: src/data/encode_labels.py
-      md5: ccdb627070354be67c6336ae9c286ecd
-      size: 2955
+      md5: 2c4ec13e4698d2404f214b486617f959
+      size: 2967
     params:
       params.yaml:
         encoding:
@@ -34,24 +34,24 @@ stages:
           - CentralAir
     outs:
     - path: data/interim/test_categorized.csv
-      md5: 3262d0ef8b68417d675f46219a50d6c9
-      size: 1644830
+      md5: 3e9fe3d01492985d396e2691085364e4
+      size: 1716631
     - path: data/interim/train_categorized.csv
-      md5: e8a3d808a439796c761fd48b70c1e1e6
-      size: 1651842
+      md5: d650fc8aeb346712d48f7a341f6ab75d
+      size: 1719201
   impute_nan:
-    cmd: python3 src/data/replace_nan.py -tr data/interim/train_categorized.csv -te
-      data/interim/test_categorized.csv -o data/interim
+    cmd: python3 src/data/replace_nan.py -tr data/interim/train_outliers_removed.csv
+      -te data/interim/test_outliers_removed.csv -o data/interim
     deps:
-    - path: data/interim/test_categorized.csv
-      md5: 3262d0ef8b68417d675f46219a50d6c9
-      size: 1644830
-    - path: data/interim/train_categorized.csv
-      md5: e8a3d808a439796c761fd48b70c1e1e6
-      size: 1651842
+    - path: data/interim/test_outliers_removed.csv
+      md5: bd380d75d6472c078361ef727a353e80
+      size: 580002
+    - path: data/interim/train_outliers_removed.csv
+      md5: 2980c1808a300ce0c0940f5838cd679c
+      size: 584918
     - path: src/data/replace_nan.py
-      md5: f480d1db48a35f7e0fcc743f7b56b433
-      size: 2145
+      md5: 4dd325f4ddec6a24a153839cd964d66c
+      size: 2323
     params:
       params.yaml:
         ignore_cols:
@@ -61,11 +61,11 @@ stages:
           method: mean
     outs:
     - path: data/interim/test_nan_imputed.csv
-      md5: e201e89090f937052d86ae46aaa738fe
-      size: 1847973
+      md5: 4333d44b0b3986ac4319002082a38eae
+      size: 580003
     - path: data/interim/train_nan_imputed.csv
-      md5: 6194100e886f986aea89b2da4bcb77d4
-      size: 1855363
+      md5: 2980c1808a300ce0c0940f5838cd679c
+      size: 584918
   remove_outliers:
     cmd: python3 src/data/remove_outliers.py -tr data/raw/train.csv -te data/raw/test.csv
       -o data/interim

@@ -10,11 +10,11 @@ stages:
     - data/raw/train.csv
   encode_labels:
     desc: Convert categorical labels to integer values without drop original columns
-    cmd: python3 src/data/encode_labels.py -tr data/raw/train.csv -te data/raw/test.csv
-      -o data/interim
+    cmd: python3 src/data/encode_labels.py -tr data/interim/train_nan_imputed.csv
+      -te data/interim/test_nan_imputed.csv -o data/interim
     deps:
-    - data/raw/test.csv
-    - data/raw/train.csv
+    - data/interim/test_nan_imputed.csv
+    - data/interim/train_nan_imputed.csv
     - src/data/encode_labels.py
     params:
     - encoding
@@ -23,11 +23,11 @@ stages:
     - data/interim/train_categorized.csv
   impute_nan:
     desc: Replace missing values using mean strategy
-    cmd: python3 src/data/replace_nan.py -tr data/interim/train_categorized.csv -te
-      data/interim/test_categorized.csv -o data/interim
+    cmd: python3 src/data/replace_nan.py -tr data/interim/train_outliers_removed.csv
+      -te data/interim/test_outliers_removed.csv -o data/interim
     deps:
-    - data/interim/test_categorized.csv
-    - data/interim/train_categorized.csv
+    - data/interim/test_outliers_removed.csv
+    - data/interim/train_outliers_removed.csv
     - src/data/replace_nan.py
     params:
     - ignore_cols

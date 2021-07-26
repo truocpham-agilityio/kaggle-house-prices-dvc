@@ -67,7 +67,7 @@ def encode_labels(train_path, test_path, output_dir, remove_nan=False):
     save_as_csv([train_df, test_df],
                 [train_path, test_path],
                 output_dir,
-                replace_text='.csv',
+                replace_text='_nan_imputed.csv',
                 suffix='_categorized.csv',
                 na_rep='nan')
 
