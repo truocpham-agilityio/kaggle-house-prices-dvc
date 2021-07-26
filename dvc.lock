@@ -25,8 +25,8 @@ stages:
       md5: 2980c1808a300ce0c0940f5838cd679c
       size: 584918
     - path: src/data/encode_labels.py
-      md5: 2c4ec13e4698d2404f214b486617f959
-      size: 2967
+      md5: 76b218a8b59bc30c58534c362225b052
+      size: 3199
     params:
       params.yaml:
         encoding:
@@ -34,11 +34,11 @@ stages:
           - CentralAir
     outs:
     - path: data/interim/test_categorized.csv
-      md5: 75b66d1111f3452a63061fef609759eb
-      size: 1716630
+      md5: 63c9de807e983f07359daa6f0357ca6b
+      size: 1921824
     - path: data/interim/train_categorized.csv
-      md5: d650fc8aeb346712d48f7a341f6ab75d
-      size: 1719201
+      md5: ab638ccee5a10ec25e72b47137418793
+      size: 1923959
   impute_nan:
     cmd: python3 src/data/replace_nan.py -tr data/interim/train_outliers_removed.csv
       -te data/interim/test_outliers_removed.csv -o data/interim
@@ -95,11 +95,11 @@ stages:
       data/interim/test_categorized.csv -o data/interim
     deps:
     - path: data/interim/test_categorized.csv
-      md5: 75b66d1111f3452a63061fef609759eb
-      size: 1716630
+      md5: 63c9de807e983f07359daa6f0357ca6b
+      size: 1921824
     - path: data/interim/train_categorized.csv
-      md5: d650fc8aeb346712d48f7a341f6ab75d
-      size: 1719201
+      md5: ab638ccee5a10ec25e72b47137418793
+      size: 1923959
     - path: src/data/skew_data.py
       md5: 3d002de5fcb535e1a63459473a6ea5af
       size: 1949
@@ -113,8 +113,8 @@ stages:
           threshold: 0.5
     outs:
     - path: data/interim/test_skewed.csv
-      md5: 2b797b4ad2c3e5ddc216cf15d016329b
-      size: 3701714
+      md5: 0a11c5c85a3a0883e0c6ee16db4c970c
+      size: 4020296
     - path: data/interim/train_skewed.csv
-      md5: 109189cd933e7614b658fe0af1a32dca
-      size: 3694572
+      md5: 216e6001084c740da1e5bbcce904f7ca
+      size: 4012724
