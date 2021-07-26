@@ -12,3 +12,7 @@ imputation:
 encoding:
   binary_to_numerical_cols:
   - CentralAir
+
+skew:
+  is_transform: true
+  threshold: 0.5

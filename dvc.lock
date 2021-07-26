@@ -90,3 +90,31 @@ stages:
     - path: data/interim/train_outliers_removed.csv
       md5: 55a4ea116d519cfb280e3bcb6efcb37a
       size: 474361
+  skew_data:
+    cmd: python3 src/data/skew_data.py -tr data/interim/train_categorized.csv -te
+      data/interim/test_categorized.csv -o data/interim
+    deps:
+    - path: data/interim/test_categorized.csv
+      md5: 75b66d1111f3452a63061fef609759eb
+      size: 1716630
+    - path: data/interim/train_categorized.csv
+      md5: d650fc8aeb346712d48f7a341f6ab75d
+      size: 1719201
+    - path: src/data/skew_data.py
+      md5: 3d002de5fcb535e1a63459473a6ea5af
+      size: 1949
+    params:
+      params.yaml:
+        ignore_cols:
+        - Id
+        - SalePrice
+        skew:
+          is_transform: true
+          threshold: 0.5
+    outs:
+    - path: data/interim/test_skewed.csv
+      md5: 2b797b4ad2c3e5ddc216cf15d016329b
+      size: 3701714
+    - path: data/interim/train_skewed.csv
+      md5: 109189cd933e7614b658fe0af1a32dca
+      size: 3694572

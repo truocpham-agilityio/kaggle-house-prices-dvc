@@ -33,6 +33,12 @@ def encode_labels(train_path, test_path, output_dir, remove_nan=False):
     for col in binary_to_numerical_cols:
         df[col] = lb.fit_transform(df[col])
 
+    # covert numerical to categorical
+    df['MSSubClass'] = df['MSSubClass'].apply(str)
+    df['OverallCond'] = df['OverallCond'].astype(str)
+    df['YrSold'] = df['YrSold'].astype(str)
+    df['MoSold'] = df['MoSold'].astype(str)
+
     # label encoding to numeric
     cat_df = df.select_dtypes(include=['object'])
     for col in cat_df.columns.values:

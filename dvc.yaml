@@ -49,3 +49,17 @@ stages:
     outs:
     - data/interim/test_outliers_removed.csv
     - data/interim/train_outliers_removed.csv
+  skew_data:
+    desc: Skewness values with threshold
+    cmd: python3 src/data/skew_data.py -tr data/interim/train_categorized.csv -te
+      data/interim/test_categorized.csv -o data/interim
+    deps:
+    - data/interim/test_categorized.csv
+    - data/interim/train_categorized.csv
+    - src/data/skew_data.py
+    params:
+    - ignore_cols
+    - skew
+    outs:
+    - data/interim/test_skewed.csv
+    - data/interim/train_skewed.csv

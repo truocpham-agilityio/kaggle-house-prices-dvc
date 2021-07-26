@@ -2,3 +2,7 @@
 /train_categorized.csv
 /test_nan_imputed.csv
 /train_nan_imputed.csv
+/test_outliers_removed.csv
+/train_outliers_removed.csv
+/test_skewed.csv
+/train_skewed.csv
