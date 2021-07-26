@@ -58,7 +58,6 @@ stages:
     - data/interim/train_categorized.csv
     - src/data/skew_data.py
     params:
-    - ignore_cols
     - skew
     outs:
     - data/interim/test_skewed.csv
