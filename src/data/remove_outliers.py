@@ -3,8 +3,6 @@ import argparse
 import os
 from pathlib import Path
 
-import pandas as pd
-
 from src.data import load_data, load_params, save_as_csv
 
 
@@ -20,20 +18,15 @@ def remove_outliers(train_path, test_path, output_dir):
     # load params
     params = load_params()
 
-    # concatenate df
-    df = pd.concat([train_df, test_df], ignore_index=True)
-
     # optionally remove outliers
     target_class = params['target_class']
     if params['is_drop_outlier']:
-        df.drop(df[(train_df['GrLivArea'] > 4000) & (df[target_class] < 300000)].index, inplace=True)
-        df.drop(df[(df['GarageArea'] > 800) & (df[target_class] > 700000)].index, inplace=True)
-        df.drop(df[(train_df['TotalBsmtSF'] > 6000) & (df[target_class] < 200000)].index, inplace=True)
-
-    # return datasets to train and test
-    n_train = train_df.shape[0]
-    train_df = df[:n_train]
-    test_df = df[n_train:]
+        train_df.drop(train_df[(train_df['GrLivArea'] > 4000) & (
+            train_df[target_class] < 300000)].index, inplace=True)
+        train_df.drop(train_df[(train_df['GarageArea'] > 800) & (
+            train_df[target_class] > 700000)].index, inplace=True)
+        train_df.drop(train_df[(train_df['TotalBsmtSF'] > 6000) & (
+            train_df[target_class] < 200000)].index, inplace=True)
 
     # save data
     save_as_csv([train_df, test_df],
