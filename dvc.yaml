@@ -44,8 +44,8 @@ stages:
     - data/raw/train.csv
     - src/data/remove_outliers.py
     params:
-    - ignore_cols
-    - imputation
+    - target_class
+    - is_drop_outlier
     outs:
     - data/interim/test_outliers_removed.csv
     - data/interim/train_outliers_removed.csv

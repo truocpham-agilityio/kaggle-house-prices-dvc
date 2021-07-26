@@ -19,8 +19,8 @@ stages:
       -te data/interim/test_nan_imputed.csv -o data/interim
     deps:
     - path: data/interim/test_nan_imputed.csv
-      md5: 4333d44b0b3986ac4319002082a38eae
-      size: 580003
+      md5: bd380d75d6472c078361ef727a353e80
+      size: 580002
     - path: data/interim/train_nan_imputed.csv
       md5: 2980c1808a300ce0c0940f5838cd679c
       size: 584918
@@ -34,8 +34,8 @@ stages:
           - CentralAir
     outs:
     - path: data/interim/test_categorized.csv
-      md5: 3e9fe3d01492985d396e2691085364e4
-      size: 1716631
+      md5: 75b66d1111f3452a63061fef609759eb
+      size: 1716630
     - path: data/interim/train_categorized.csv
       md5: d650fc8aeb346712d48f7a341f6ab75d
       size: 1719201
@@ -44,11 +44,11 @@ stages:
       -te data/interim/test_outliers_removed.csv -o data/interim
     deps:
     - path: data/interim/test_outliers_removed.csv
-      md5: bd380d75d6472c078361ef727a353e80
-      size: 580002
+      md5: a95186cee997d3feb964f1f14e167c61
+      size: 489843
     - path: data/interim/train_outliers_removed.csv
-      md5: 2980c1808a300ce0c0940f5838cd679c
-      size: 584918
+      md5: 55a4ea116d519cfb280e3bcb6efcb37a
+      size: 474361
     - path: src/data/replace_nan.py
       md5: 4dd325f4ddec6a24a153839cd964d66c
       size: 2323
@@ -61,8 +61,8 @@ stages:
           method: mean
     outs:
     - path: data/interim/test_nan_imputed.csv
-      md5: 4333d44b0b3986ac4319002082a38eae
-      size: 580003
+      md5: bd380d75d6472c078361ef727a353e80
+      size: 580002
     - path: data/interim/train_nan_imputed.csv
       md5: 2980c1808a300ce0c0940f5838cd679c
       size: 584918
@@ -81,11 +81,8 @@ stages:
       size: 1805
     params:
       params.yaml:
-        ignore_cols:
-        - Id
-        - SalePrice
-        imputation:
-          method: mean
+        is_drop_outlier: true
+        target_class: SalePrice
     outs:
     - path: data/interim/test_outliers_removed.csv
       md5: a95186cee997d3feb964f1f14e167c61
