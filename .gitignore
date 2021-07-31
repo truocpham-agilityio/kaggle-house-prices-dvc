@@ -84,7 +84,7 @@ target/
 *.pyc
 
 # Ignore submission
-submission/
-models/
+/submissions/
+/models/
 results/
 venv37/
