@@ -70,15 +70,6 @@ Install all dependencies that are required for the project by running:
 pip install -r requirements.txt
 ```
 
-#### Launching Jupyter Locally
-
-If you want to launch [Jupyter Notebook](http://jupyter.org/) locally you may do it by running the following command from the root folder of the project:
-
-```bash
-jupyter notebook
-```
-After this Jupyter Notebook will be accessible by `http://localhost:8888`.
-
 #### Launching Jupyter Remotely
 
 Fast online previewer for Jupyter notebooks [Jupyter NBViewer](http://nbviewer.jupyter.org/).
@@ -91,12 +82,12 @@ git clone git@github.com:truocpham-agilityio/kaggle-house-prices-dvc.git
 
 # create virtual environment in folder
 cd kaggle-house-prices-dvc
-python3 -m venv venv37
+python -m venv venv37
 source venv37/bin/activate
 
 # install requirements
-pip3 install -r requirements.txt
-pip3 install .
+pip install -r requirements.txt
+pip install .
 
 # pull data from origin
 dvc pull -r origin
