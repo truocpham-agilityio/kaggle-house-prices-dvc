@@ -176,8 +176,8 @@ stages:
       md5: 3d2b479225b23132cfc1f4a522a40ddd
       size: 4033440
     - path: src/models/predict_model.py
-      md5: 099fe279d7dfc3af13446a49db85f847
-      size: 2031
+      md5: 32a034c490fb0c7e26af12cd3182a5b2
+      size: 2045
     params:
       params.yaml:
         target_class: SalePrice
