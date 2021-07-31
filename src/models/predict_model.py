@@ -44,7 +44,7 @@ def predict_model(test_path, results_dir, model_dir):
             submission = pd.DataFrame()
             submission['Id'] = id
             submission['SalePrice'] = pred
-            submission.to_csv(f'{file_name}.csv', index=False)
+            submission.to_csv(f'{results_dir}/{file_name}.csv', index=False)
 
 
 if __name__ == '__main__':

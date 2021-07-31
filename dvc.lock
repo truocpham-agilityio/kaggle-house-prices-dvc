@@ -168,3 +168,16 @@ stages:
             loss: huber
             random_state: 5
         target_class: SalePrice
+  predict_model:
+    cmd: python3 src/models/predict_model.py -te data/interim/test_skewed.csv -rd
+      ./submissions -md ./models
+    deps:
+    - path: data/interim/test_skewed.csv
+      md5: 3d2b479225b23132cfc1f4a522a40ddd
+      size: 4033440
+    - path: src/models/predict_model.py
+      md5: 099fe279d7dfc3af13446a49db85f847
+      size: 2031
+    params:
+      params.yaml:
+        target_class: SalePrice

@@ -72,3 +72,12 @@ stages:
     params:
     - model_params
     - target_class
+  predict_model:
+    desc: Use trained models to make predictions
+    cmd: python3 src/models/predict_model.py -te data/interim/test_skewed.csv -rd
+      ./submissions -md ./models
+    deps:
+    - data/interim/test_skewed.csv
+    - src/models/predict_model.py
+    params:
+    - target_class
